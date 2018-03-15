@@ -1,5 +1,5 @@
-
 #include <QtWidgets>
+#include <Qt>
 #include "mainwindow.h"
 
 MainWindow::MainWindow()
@@ -11,17 +11,16 @@ MainWindow::MainWindow()
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
 
-    mainLayout->setMenuBar(menuBar);
-    mainLayout ->addWidget(HGBAccountBalance);
-    mainLayout ->addWidget(HGBAccountSelector);
-    mainLayout ->addWidget(HGBAccountActions);
+    mainLayout -> setMenuBar(menuBar);
+    mainLayout -> addWidget(HGBAccountBalance);
+    mainLayout -> addWidget(HGBAccountSelector);
+    mainLayout -> addWidget(HGBAccountActions);
 
     setLayout(mainLayout);
 
-
     setWindowTitle(tr("Banking GUI[WIP]"));
-    setMinimumSize(480, 320);
-    resize(480, 320);
+    setMinimumSize(520, 360);
+    //resize(520, 360);
 }
 
 void MainWindow::createMenu()
@@ -44,21 +43,19 @@ void MainWindow::createHGBAccountBalance()
     HGBAccountBalance = new QGroupBox(tr("Account Information"));
     QGridLayout *layout = new QGridLayout;
 
-    labels[0] = new QLabel("Hello, Guest!");
-    labels[1] = new QLabel("Account Number: ");
-    labels[2] = new QLabel("0000000000000000");
-    labels[3] = new QLabel("Account Balance:");
-    labels[4] = new QLabel("$0.00");
+    labels[0] = new QLabel(strWelcome);
+    labels[1] = new QLabel(str_AccNum);
+    labels[2] = new QLabel(str_AccBal);
 
     QFont font = labels[0]->font();
-    font.setPointSize(22);
+    font.setPointSize(20);
     labels[0]->setFont(font);
+    labels[0]->setAlignment(Qt::AlignRight);
 
-    layout->addWidget(labels[0], 0, 1);
-    layout->addWidget(labels[1], 1, 0);
-    layout->addWidget(labels[2], 1, 1);
-    layout->addWidget(labels[3], 2, 0);
-    layout->addWidget(labels[4], 2, 1);
+    layout->addWidget(labels[0]);
+    layout->addWidget(labels[1]);
+    layout->addWidget(labels[2]);
+
 
     HGBAccountBalance->setLayout(layout);
 }
