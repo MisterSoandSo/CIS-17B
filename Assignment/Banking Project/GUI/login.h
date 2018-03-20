@@ -4,6 +4,8 @@
 
 class login
 {
+private:
+
 public:
     login();
 };

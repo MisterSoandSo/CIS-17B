@@ -12,14 +12,15 @@ private:
 public:
     account();
     account(string number, double balance);
-    void deposit();
-    void withdraw();
-    void transfer();
+    virtual ~account();
+    virtual void deposit(double);
+    virtual bool withdraw(double);
+    bool transfer(double);
     void getName();
     void setName();
-    void getBalance();
+    double getBalance();
     void setBalance();
-    void updateBalance();
+
 
 };
 
