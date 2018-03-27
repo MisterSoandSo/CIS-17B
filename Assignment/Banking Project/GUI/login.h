@@ -1,9 +1,11 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
+#include <QDialog>
 #include <iostream>
 using namespace std;
-class login
+
+class login:public QDialog
 {
     public:
         login();

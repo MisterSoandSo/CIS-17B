@@ -3,6 +3,7 @@
 
 #include <QDialog>
 
+
 QT_BEGIN_NAMESPACE
 class QAction;
 class QGroupBox;
@@ -16,11 +17,11 @@ QT_END_NAMESPACE
 class MainWindow : public QDialog
 {
     Q_OBJECT
-
 public:
     MainWindow();
 
 private:
+
     void createMenu();
     void createHGBAccountBalance();
     void createHGBAccountSelector();
