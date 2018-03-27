@@ -8,9 +8,9 @@ class checking: public account
 private:
     string accountNumber;
     double accountBalance;
-    double overdraft_fee = 0;
+    double overdraft_fee;
 public:
-    checking(double od_fee,string number, double balance);
+    checking(string number, double balance);
     virtual ~checking();
     void deposit(double);
     bool withdraw(double);

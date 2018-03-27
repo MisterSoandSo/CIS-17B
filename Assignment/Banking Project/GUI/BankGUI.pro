@@ -5,18 +5,23 @@ QT = core gui
 greaterThan(QT_MAJOR_VERSION,4): QT += widgets
 
 HEADERS += \
-    mainwindow.h \
-    user.h \
-    login.h \
     account.h \
+    checking.h \
+    login.h \
+    mainwindow.h \
     saving.h \
-    checking.h
+    user.h
+
 
 SOURCES += \
-    mainwindow.cpp \
-    main.cpp \
-    user.cpp \
-    login.cpp \
     account.cpp \
+    checking.cpp \
+    login.cpp \
+    main.cpp \
+    mainwindow.cpp \
     saving.cpp \
-    checking.cpp
+    user.cpp
+
+DISTFILES += \
+    accountinfo.txt
+

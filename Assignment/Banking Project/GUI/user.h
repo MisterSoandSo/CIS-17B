@@ -1,16 +1,17 @@
 #ifndef USER_H
 #define USER_H
-
+#include "checking.h"
+#include "saving.h"
 #include <iostream>
 using namespace std;
 
-class User
+class user
 {
 private:
-    string username;
-
+    string name;
 public:
-        User();
+        user(string u_name,string c_num, double c_bal,string s_num,double s_bal);
+        ~user();
 };
 
 #endif // USER_H

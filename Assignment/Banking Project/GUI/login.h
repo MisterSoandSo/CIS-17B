@@ -1,13 +1,15 @@
 #ifndef LOGIN_H
 #define LOGIN_H
 
-
+#include <iostream>
+using namespace std;
 class login
 {
-private:
+    public:
+        login();
+        virtual ~login();
+        bool login_check(string,string, string, string);
 
-public:
-    login();
 };
 
 #endif // LOGIN_H

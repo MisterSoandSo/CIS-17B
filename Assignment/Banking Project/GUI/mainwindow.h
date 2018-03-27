@@ -44,6 +44,7 @@ private:
     QPushButton *btnAccountAction[4];
 
     QMenu *fileMenu;
+    QAction *logIN;
     QMenu *aboutMenu;
     QAction *exitAction;
 };

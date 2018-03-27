@@ -1,6 +1,7 @@
 #include <QtWidgets>
 #include <Qt>
 #include "mainwindow.h"
+#include "login.h"
 
 MainWindow::MainWindow()
 {
@@ -18,7 +19,7 @@ MainWindow::MainWindow()
 
     setLayout(mainLayout);
 
-    setWindowTitle(tr("Banking GUI[WIP]"));
+    setWindowTitle(tr("Banking GUI"));
     setMinimumSize(520, 360);
     //resize(520, 360);
 }
@@ -28,8 +29,9 @@ void MainWindow::createMenu()
     menuBar = new QMenuBar;
 
     fileMenu = new QMenu(tr("&File"), this);
-    aboutMenu = new QMenu(tr("&About"), this);
 
+    aboutMenu = new QMenu(tr("&About"), this);
+    logIN = fileMenu->addAction(tr("L&ogin"));
     exitAction = fileMenu->addAction(tr("E&xit"));
 
     menuBar->addMenu(fileMenu);

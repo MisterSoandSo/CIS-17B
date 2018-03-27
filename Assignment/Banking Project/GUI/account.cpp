@@ -38,6 +38,7 @@ bool account::withdraw(double money)
         accountBalance -= money;
         return true;
     }
+    return false;
 }
 bool account::transfer(double money)
 {
@@ -50,19 +51,12 @@ bool account::transfer(double money)
     //else return false not enough money
     return false;
 }
-void account::getName()
-{
 
-}
-void account::setName()
-{
-
-}
 double account::getBalance()
 {
     return accountBalance;
 }
-void account::setBalance()
+void account::setBalance(double money)
 {
-
+    accountBalance = money;
 }

@@ -7,9 +7,9 @@ class saving: public account
 private:
     string accountNumber;
     double accountBalance;
-    float interest_rate = 0.00;
+    float interest_rate;
 public:
-    saving(float int_rate,string number, double balance);
+    saving(string number, double balance);
     virtual ~saving();
     void deposit(double);
     bool withdraw(double);

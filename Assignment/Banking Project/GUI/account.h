@@ -16,10 +16,8 @@ public:
     virtual void deposit(double);
     virtual bool withdraw(double);
     bool transfer(double);
-    void getName();
-    void setName();
     double getBalance();
-    void setBalance();
+    void setBalance(double);
 
 
 };

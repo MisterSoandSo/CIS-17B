@@ -1,10 +1,10 @@
 #include "saving.h"
 
 
-saving::saving(float int_rate,string number, double balance):
-    interest_rate(int_rate),account(number,balance)
+saving::saving(string number, double balance):
+    account(number,balance)
 {
-
+    interest_rate=0.0005;
 }
 saving::~saving()
 {

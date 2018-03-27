@@ -1,10 +1,10 @@
 #include "checking.h"
 
 
-checking::checking(double od_fee,string number, double balance):
-     overdraft_fee(od_fee), account(number, balance)
+checking::checking(string number, double balance):
+     account(number, balance)
 {
-
+    overdraft_fee=1.5;
 }
 checking::~checking()
 {
