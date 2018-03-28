@@ -10,7 +10,8 @@ HEADERS += \
     login.h \
     mainwindow.h \
     saving.h \
-    user.h
+    user.h \
+    database.h
 
 
 SOURCES += \
@@ -20,7 +21,8 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     saving.cpp \
-    user.cpp
+    user.cpp \
+    database.cpp
 
 DISTFILES += \
     accountinfo.txt

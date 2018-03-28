@@ -6,25 +6,19 @@
 #include "account.h"
 #include "checking.h"
 #include "saving.h"
+#include "database.h"
 
-struct DataBase
-{
-    QString username;
-    QString password;
-    int account_checking;
-    int account_saving;
-    double checking_bal;
-    double saving_bal;
-    double OD_FEE = 1.00;
-    float  int_RATE = 0.001;
-};
 
 int main(int argc, char *argv[])
 {
+    QApplication app(argc, argv);
+
     QFile inputFile("accountinfo.txt");
     QString line,login_user, login_pword;
     int num_accounts;
-    DataBase D_user[40];
+    database D_user[40];
+    database TestUser("Manual Tester","password",1234,8108.99,5678,9874.56);
+
     if (inputFile.open(QIODevice::ReadOnly))
     {
        QTextStream in(&inputFile);
@@ -32,20 +26,29 @@ int main(int argc, char *argv[])
 
        for (int i = 0; i< num_accounts; i++)
        {
-           D_user[i].username = in.readLine();
-           D_user[i].password = in.readLine();
-           D_user[i].account_checking = in.readLine().toInt();
-           D_user[i].checking_bal = in.readLine().toDouble();
-           D_user[i].account_saving = in.readLine().toInt();
-           D_user[i].saving_bal = in.readLine().toDouble();
+           QString t_username = in.readLine();
+           QString t_password = in.readLine();
+           int t_account_checking = in.readLine().toInt();
+           double t_checking_bal = in.readLine().toDouble();
+           int t_account_saving = in.readLine().toInt();
+           double t_saving_bal = in.readLine().toDouble();
+           database t_user(t_username,t_password,t_account_checking,t_checking_bal,t_account_saving,t_saving_bal);
+           D_user[i] = t_user;
        }
        inputFile.close();
+
+       MainWindow window(D_user[0]);
+       window.show();
+       return app.exec();
+   }
+    else
+    {
+        //if read fails
+        MainWindow window(TestUser);
+        window.show();
+        return app.exec();
     }
 
 
-    QApplication app(argc, argv);
-    MainWindow window;
-    window.show();
 
-    return app.exec();
 }

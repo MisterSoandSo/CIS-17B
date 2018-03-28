@@ -5,6 +5,10 @@
 
 MainWindow::MainWindow()
 {
+    updatestrUsername("Guest");
+    updatestrUser_Acc("0000");
+    updatestrUser_BAL("0.00");
+
     createMenu();
     createHGBAccountBalance();
     createHGBAccountSelector();
@@ -21,7 +25,30 @@ MainWindow::MainWindow()
 
     setWindowTitle(tr("Banking GUI"));
     setMinimumSize(520, 360);
-    //resize(520, 360);
+
+}
+MainWindow::MainWindow(database d)
+{
+    updatestrUsername(d.getUser());
+    updatestrUser_Acc(QString::number(d.getAccCheck()));
+    updatestrUser_BAL(QString::number(d.getchecking_bal()));
+    createMenu();
+    createHGBAccountBalance();
+    createHGBAccountSelector();
+    createHGBAccountActions();
+
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+
+    mainLayout -> setMenuBar(menuBar);
+    mainLayout -> addWidget(HGBAccountBalance);
+    mainLayout -> addWidget(HGBAccountSelector);
+    mainLayout -> addWidget(HGBAccountActions);
+
+    setLayout(mainLayout);
+
+    setWindowTitle(tr("Banking GUI"));
+    setMinimumSize(520, 360);
+
 }
 
 void MainWindow::createMenu()
@@ -93,4 +120,16 @@ void MainWindow::createHGBAccountActions()
     HGBAccountActions->setLayout(layout);
 }
 
+void MainWindow::updatestrUsername(QString x)
+{
+    strWelcome = QString("Welcome,  %1 !").arg(x);
+}
+void MainWindow::updatestrUser_Acc(QString y)
+{
+    str_AccNum = QString("Account Number: 4469-2584-8901-%1 ").arg(y);
+}
+void MainWindow::updatestrUser_BAL(QString z)
+{
+    str_AccBal = QString("Account Balance: $ %1 ").arg(z);
+}
 

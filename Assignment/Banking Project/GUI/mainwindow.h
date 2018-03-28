@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QDialog>
-
+#include <database.h>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -19,6 +19,11 @@ class MainWindow : public QDialog
     Q_OBJECT
 public:
     MainWindow();
+    MainWindow(database d);
+    void updatestrUsername(QString x);
+    void updatestrUser_Acc(QString y);
+    void updatestrUser_BAL(QString z);
+
 
 private:
 
@@ -32,13 +37,9 @@ private:
     QGroupBox *HGBAccountSelector;
     QGroupBox *HGBAccountActions;
 
-    QString strUsername = "Guest";
-    QString strUser_Acc = "0000";
-    QString strUser_BAL = "0.00";
-
-    QString strWelcome = QString("Welcome,  %1 !").arg(strUsername);
-    QString str_AccNum = QString("Account Number: 4469-2584-8901-%1 ").arg(strUser_Acc);
-    QString str_AccBal = QString("Account Balance: $ %1 ").arg(strUser_BAL);
+    QString strWelcome;
+    QString str_AccNum;
+    QString str_AccBal;
 
     QLabel *labels[];
     QPushButton *btnAccountSelector[2];
