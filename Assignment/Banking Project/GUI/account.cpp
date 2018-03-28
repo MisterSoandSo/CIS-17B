@@ -5,7 +5,7 @@ account::account()
     accountNumber = "0000";
     accountBalance = 0.00;
 }
-account::account(string number, double balance)
+account::account(QString number, double balance)
 {
     accountNumber = number;
     accountBalance = balance;
@@ -28,7 +28,7 @@ bool account::withdraw(double money)
     }
     else if(this->accountBalance < money)    //we dont have enough money
     {
-        cout <<"You do not have enough cash in account"<<endl;
+        //cout <<"You do not have enough cash in account"<<endl;
         //saving - to mininimum of $0
         //return false;
         //checking - apply overdraft fee
@@ -52,6 +52,10 @@ bool account::transfer(double money)
     return false;
 }
 
+QString account::getAccNum()
+{
+    return accountNumber;
+}
 double account::getBalance()
 {
     return accountBalance;
@@ -59,4 +63,11 @@ double account::getBalance()
 void account::setBalance(double money)
 {
     accountBalance = money;
+}
+account account::operator=(const account& b)
+{
+    account temp;
+    temp.accountNumber = b.accountNumber;
+    temp.accountBalance = b.accountBalance;
+    return temp;
 }

@@ -1,17 +1,20 @@
 #include <QtWidgets>
 #include <Qt>
 #include "mainwindow.h"
-#include "login.h"
+#include "account.h"
+#include "checking.h"
+#include "saving.h"
 
 MainWindow::MainWindow()
 {
+    user t;
     updatestrUsername("Guest");
     updatestrUser_Acc("0000");
     updatestrUser_BAL("0.00");
 
     createMenu();
     createHGBAccountBalance();
-    createHGBAccountSelector();
+    createHGBAccountSelector(t);
     createHGBAccountActions();
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -27,14 +30,14 @@ MainWindow::MainWindow()
     setMinimumSize(520, 360);
 
 }
-MainWindow::MainWindow(database d)
+MainWindow::MainWindow(user d)
 {
     updatestrUsername(d.getUser());
-    updatestrUser_Acc(QString::number(d.getAccCheck()));
-    updatestrUser_BAL(QString::number(d.getchecking_bal()));
+    updatestrUser_Acc(d.getAccNumC());
+    updatestrUser_BAL(d.getBalanceC());
     createMenu();
     createHGBAccountBalance();
-    createHGBAccountSelector();
+    createHGBAccountSelector(d);
     createHGBAccountActions();
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -89,7 +92,7 @@ void MainWindow::createHGBAccountBalance()
     HGBAccountBalance->setLayout(layout);
 }
 
-void MainWindow::createHGBAccountSelector()
+void MainWindow::createHGBAccountSelector(user d)
 {
     HGBAccountSelector = new QGroupBox(tr("Select account Type"));
 
@@ -101,6 +104,8 @@ void MainWindow::createHGBAccountSelector()
     layout->addWidget(btnAccountSelector[1], 0, 1);
 
     HGBAccountSelector->setLayout(layout);
+    QObject::connect(btnAccountSelector[0], SIGNAL (released()), this, SLOT (handleChecking(d)));
+    QObject::connect(btnAccountSelector[1], SIGNAL (released()), this, SLOT (handleSaving(d)));
 }
 
 void MainWindow::createHGBAccountActions()
@@ -118,6 +123,11 @@ void MainWindow::createHGBAccountActions()
     layout->addWidget(btnAccountAction[3], 1, 1);
 
     HGBAccountActions->setLayout(layout);
+
+    QObject::connect(btnAccountAction[0], SIGNAL (released()), this, SLOT (handleDeposit()));
+    QObject::connect(btnAccountAction[1], SIGNAL (released()), this, SLOT (handleTransfer()));
+    QObject::connect(btnAccountAction[2], SIGNAL (released()), this, SLOT (handleWithdraw()));
+    QObject::connect(btnAccountAction[3], SIGNAL (released()), this, SLOT (handleHistory()));
 }
 
 void MainWindow::updatestrUsername(QString x)
@@ -132,4 +142,42 @@ void MainWindow::updatestrUser_BAL(QString z)
 {
     str_AccBal = QString("Account Balance: $ %1 ").arg(z);
 }
+void MainWindow::handleSaving(user d)
+{
+    //code to update Saving Account Information
+    updatestrUser_Acc(d.getAccNumS());
+    updatestrUser_BAL(d.getBalanceS());
+    HGBAccountBalance->update();
 
+}
+
+void MainWindow::handleChecking(user d)
+{
+    //code to update checking account information
+    updatestrUser_Acc(d.getAccNumC());
+    updatestrUser_BAL(d.getBalanceC());
+    HGBAccountBalance->update();
+
+}
+void MainWindow::handleDeposit()
+{
+    DepositWindow *dWindow = new DepositWindow();
+    dWindow->show();
+}
+
+void MainWindow::handleWithdraw()
+{
+    WithdrawWindow *wWindow = new WithdrawWindow();
+    wWindow->show();
+}
+
+void MainWindow::handleTransfer()
+{
+    TransferWindow *tWindow = new TransferWindow();
+    tWindow->show();
+}
+void MainWindow::handleHistory()
+{
+    HistoryWindow *hWindow = new HistoryWindow();
+    hWindow->show();
+}

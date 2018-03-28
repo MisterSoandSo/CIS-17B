@@ -1,23 +1,27 @@
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 
-#include <iostream>
-using namespace std;
+
+#include <QString>
+
 
 class account
 {
 private:
-    string accountNumber;
+    QString accountNumber;
     double accountBalance;
 public:
     account();
-    account(string number, double balance);
+    account(QString number, double balance);
     virtual ~account();
     virtual void deposit(double);
     virtual bool withdraw(double);
     bool transfer(double);
+
+    QString getAccNum();
     double getBalance();
     void setBalance(double);
+    account operator=(const account& b);
 
 
 };

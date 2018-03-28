@@ -5,19 +5,17 @@
 class saving: public account
 {
 private:
-    string accountNumber;
-    double accountBalance;
     float interest_rate;
 public:
-    saving(string number, double balance);
+    saving(QString number, double balance);
     virtual ~saving();
     void deposit(double);
     bool withdraw(double);
     bool transfer(double);
-    void getName();
-    void setName();
-    void getBalance();
-    void setBalance();
+
+    QString getAccNum();
+    double getBalance();
+    void setBalance(double);
 };
 
 #endif // SAVING_H
