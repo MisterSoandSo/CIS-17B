@@ -1,13 +1,13 @@
 #include <QApplication>
 #include <QMainWindow>
-#include <QFile>
-#include <QTextStream>
+
 #include "mainwindow.h"
-#include "account.h"
-#include "checking.h"
-#include "saving.h"
 #include "user.h"
 
+
+//#include "account.h"
+//#include "checking.h"
+//#include "saving.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,8 +15,9 @@ int main(int argc, char *argv[])
 
     //user TestUser("Manual Tester","password",1234,8108.99,5678,9874.56);
 
-    //MainWindow window(TestUser);
-    MainWindow window;
+    user TestUser("username","password");
+    MainWindow window(TestUser);
+
     window.show();
     return app.exec();
 

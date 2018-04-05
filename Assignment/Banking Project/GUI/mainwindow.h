@@ -3,8 +3,8 @@
 
 #include <QDialog>
 #include "login.h"
+#include "user.h"
 
-//#include <user.h>
 //#include"depositwindow.h"
 //#include "withdrawwindow.h"
 //#include "transferwindow.h"
@@ -19,25 +19,22 @@ class QMenuBar;
 class QPushButton;
 QT_END_NAMESPACE
 
-
 class MainWindow : public QDialog
 {
     Q_OBJECT
 public:
-    MainWindow();
-
-    //MainWindow(user d);
+    MainWindow(user &d);
     void updatestrUsername(QString x);
     void updateAccNUM_BAL(QString y, QString z);
+    void setupmainuser(user &d);
     void testmessage(QString);
-
+    void callLogin(bool);
 private:
 
-    void createMenu();
+    void createMenu(user &d);
     void createHGBAccountBalance();
     void createHGBAccountSelector();
     void createHGBAccountActions();
-    void callLogin(bool);
 
     QMenuBar *menuBar;
     QGroupBox *HGBAccountBalance;
@@ -48,7 +45,7 @@ private:
     QString str_AccNum;
     QString str_AccBal;
 
-    QLabel *labels[];
+    QLabel *labels[5];
     QPushButton *btnAccountSelector[2];
     QPushButton *btnAccountAction[4];
 
@@ -58,12 +55,10 @@ private:
     QMenu *aboutMenu;
     QAction *exitAction;
 
-    //DepositWindow *dWindow;
-    //WithdrawWindow *wWindow;
-    //TransferWindow *tWindow;
-    //HistoryWindow *hWindow;
+    user main_user_data;
 
     private slots:
+        void checklog(bool);
         void handleLogin();
         void handleLogoff();
         void handleDeposit();
@@ -72,8 +67,7 @@ private:
         void handleHistory();
         void handleChecking();
         void handleSaving();
-    signals:
-        void b_log_result(bool &b_result);
+
 };
 
 #endif

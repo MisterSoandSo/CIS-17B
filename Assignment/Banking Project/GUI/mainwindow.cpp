@@ -1,18 +1,19 @@
 #include <QtWidgets>
+#include <QEventLoop>
 #include <Qt>
 #include "mainwindow.h"
-
+#include "user.h"
 
 //#include "account.h"
 //#include "checking.h"
 //#include "saving.h"
 
-MainWindow::MainWindow()
+MainWindow::MainWindow(user &data)
 {
     updatestrUsername("Guest");
     updateAccNUM_BAL("0000", "0.00");
 
-    createMenu();
+    createMenu(data);
     createHGBAccountBalance();
     createHGBAccountSelector();
     createHGBAccountActions();
@@ -28,13 +29,14 @@ MainWindow::MainWindow()
 
     setWindowTitle(tr("Banking GUI"));
     setMinimumSize(520, 360);
-
 }
 
-void MainWindow::createMenu()
+void MainWindow::createMenu(user &data)
 {
-    menuBar = new QMenuBar;
+    main_user_data.setUser(data.getUser());
+    main_user_data.setPwd(data.getPwd());
 
+    menuBar = new QMenuBar;
     fileMenu = new QMenu(tr("&File"), this);
 
     aboutMenu = new QMenu(tr("&About"), this);
@@ -164,24 +166,58 @@ void MainWindow::callLogin(bool local_cbool)
         }
     }
 }
-void MainWindow::handleLogin()
+void MainWindow::checklog(bool local_cbool)
 {
-    Login *client = new Login();
-    client->show();
-    while(true)
-    {
-        if(client->getLogStat() == true)
+    if(local_cbool)
         {
-             callLogin(true);
-             break;
+             updatestrUsername(main_user_data.getUser());
+             updateAccNUM_BAL("xxxx", "x.xx");
+             labels[0]->setText(strWelcome);
+             labels[2]->setText(str_AccNum);
+             labels[4]->setText(str_AccBal);
+
+             logIN->setVisible(false);
+             logOFF->setVisible(true);
         }
         else
         {
-            callLogin(false);
+            handleLogoff();
         }
+}
+void MainWindow::handleLogin()
+{
+    Login *client = new Login(main_user_data);
+
+    QDialog dialog(this);
+    QFormLayout form(&dialog);
+
+    form.addRow(new QLabel("Input login credentials"));
+
+    QList<QLineEdit *> fields;
+    QString inputlabels[]={"Username:","Password:"};
+
+    for(int i = 0; i < 2; ++i) {
+        QLineEdit *lineEdit = new QLineEdit(&dialog);
+        QString label = QString("%1").arg(inputlabels[i]);
+        form.addRow(label, lineEdit);
+
+        fields << lineEdit;
     }
-    logIN->setVisible(false);
-    logOFF->setVisible(true);
+
+    // Add some standard buttons (Cancel/Ok) at the bottom of the dialog
+    QDialogButtonBox buttonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel,
+                               Qt::Horizontal, &dialog);
+    form.addRow(&buttonBox);
+    QObject::connect(&buttonBox, SIGNAL(accepted()), &dialog, SLOT(accept()));
+    QObject::connect(&buttonBox, SIGNAL(rejected()), &dialog, SLOT(reject()));
+
+    // Show the dialog as modal
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        client->requestLogincheck(fields[0]->text(),fields[1]->text());
+        checklog(client->getLogStat());
+        callLogin(true);
+    }
 }
 void MainWindow::handleLogoff()
 {
@@ -189,8 +225,6 @@ void MainWindow::handleLogoff()
     logIN->setVisible(true);
     logOFF->setVisible(false);
 }
-
-
 void MainWindow::handleSaving()
 {
 
@@ -203,21 +237,17 @@ void MainWindow::handleChecking()
 }
 void MainWindow::handleDeposit()
 {
-    //DepositWindow *dWindow = new DepositWindow();
-    //dWindow->show();
+
 }
 void MainWindow::handleWithdraw()
 {
-    //WithdrawWindow *wWindow = new WithdrawWindow();
-    //wWindow->show();
+
 }
 void MainWindow::handleTransfer()
 {
-    //TransferWindow *tWindow = new TransferWindow();
-    //tWindow->show();
+
 }
 void MainWindow::handleHistory()
 {
-    //HistoryWindow *hWindow = new HistoryWindow();
-    //hWindow->show();
+
 }

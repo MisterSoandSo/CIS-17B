@@ -2,7 +2,7 @@
 #define Login_H
 
 #include <QWidget>
-
+#include "user.h"
 
 QT_BEGIN_NAMESPACE
 class QDialogButtonBox;
@@ -18,25 +18,29 @@ class Login : public QWidget
     Q_OBJECT
 
 public:
-    Login(QWidget *parent = 0);
+    Login(user&);
     bool getLogStat();
     void setLogStat(bool);
-private slots:
+    void setUserPass(user&);
+    void requestLogincheck(QString,QString);
+/*private slots:
 
-    void requestLogincheck();
-    void enableloginButton();
 
+    //void enableloginButton();
+*/
 private:
-    QLabel *loginUserLabel;
-    QLabel *passWordLabel;
-    QLineEdit *userLineEdit;
-    QLineEdit *passLineEdit;
-    QLabel *statusLabel;
-    bool login_status;
+    //QLabel *loginUserLabel;
+    //QLabel *passWordLabel;
+    //QLineEdit *userLineEdit;
+    //QLineEdit *passLineEdit;
+    //QLabel *statusLabel;
+    bool login_status = false;
+    QString userInput;
+    QString passInput;
 
-    QPushButton *loginButton;
-    QPushButton *quitButton;
-    QDialogButtonBox *buttonBox;
+    //QPushButton *loginButton;
+    //QPushButton *quitButton;
+    //QDialogButtonBox *buttonBox;
 };
 
 
