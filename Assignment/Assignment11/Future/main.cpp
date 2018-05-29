@@ -1,6 +1,6 @@
 #include <QtWidgets>
 #include <QtConcurrent>
-
+#include <QFuture>
 #include <functional>
 
 using namespace QtConcurrent;
@@ -8,126 +8,84 @@ using namespace QtConcurrent;
 int fib(int n)
 {
    if (n <= 1)
-      return n;
+   {
+    return n;
+   }
+
    return fib(n-1) + fib(n-2);
+}
+
+bool isPrime(int number)
+{
+    for (int i=2; i*i<=number; i++)
+    {
+        if (number % i == 0) return false;
+    }
+    return true;
 }
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
 
-    const int master_N_value = 100;
-    int final_fib =0;
-    float final_add = 0.0;
-    int prime_num =0;
+    const int master_N_value = 10;
+    qDebug() << "N value:" <<master_N_value;
 
-    // Prepare the vector.
-    QVector<int> vector;
-    for (int i = 0; i < master_N_value; ++i)
-        vector.append(i);
-    //Prepare fib table
-
-    //
-    //
-
-    // Create a progress dialog.
-    QProgressDialog dialog1;
-    QProgressDialog dialog2;
-    QProgressDialog dialog3;
-
-    dialog1.setLabelText(QString("Progressing using %1 thread(s)...").arg(QThread::idealThreadCount()));
-    dialog2.setLabelText(QString("Progressing using %1 thread(s)...").arg(QThread::idealThreadCount()));
-    dialog3.setLabelText(QString("Progressing using %1 thread(s)...").arg(QThread::idealThreadCount()));
-
-    // Create a QFutureWatcher and connect signals and slots.
-    QFutureWatcher<void> futureWatcher1;
-    QFutureWatcher<void> futureWatcher2;
-    QFutureWatcher<void> futureWatcher3;
-
-
-    QObject::connect(&futureWatcher1, &QFutureWatcher<void>::finished, &dialog1, &QProgressDialog::reset);
-    QObject::connect(&futureWatcher2, &QFutureWatcher<void>::finished, &dialog2, &QProgressDialog::reset);
-    QObject::connect(&futureWatcher3, &QFutureWatcher<void>::finished, &dialog3, &QProgressDialog::reset);
-
-    QObject::connect(&dialog1, &QProgressDialog::canceled, &futureWatcher1, &QFutureWatcher<void>::cancel);
-    QObject::connect(&dialog2, &QProgressDialog::canceled, &futureWatcher2, &QFutureWatcher<void>::cancel);
-    QObject::connect(&dialog3, &QProgressDialog::canceled, &futureWatcher3, &QFutureWatcher<void>::cancel);
-
-    QObject::connect(&futureWatcher1,  &QFutureWatcher<void>::progressRangeChanged, &dialog1, &QProgressDialog::setRange);
-    QObject::connect(&futureWatcher2,  &QFutureWatcher<void>::progressRangeChanged, &dialog2, &QProgressDialog::setRange);
-    QObject::connect(&futureWatcher3,  &QFutureWatcher<void>::progressRangeChanged, &dialog3, &QProgressDialog::setRange);
-
-    QObject::connect(&futureWatcher1, &QFutureWatcher<void>::progressValueChanged,  &dialog1, &QProgressDialog::setValue);
-    QObject::connect(&futureWatcher2, &QFutureWatcher<void>::progressValueChanged,  &dialog2, &QProgressDialog::setValue);
-    QObject::connect(&futureWatcher3, &QFutureWatcher<void>::progressValueChanged,  &dialog3, &QProgressDialog::setValue);
-
-    // Our function to compute
-    std::function<void(int&)> fiba = [&final_fib](int &iteration)
+    QFuture<void> futureWatcher1 =QtConcurrent::run([master_N_value]()
     {
-        const int work = 1000 * 1000 * 40;
-        volatile int v = 0;
-        for (int j = 0; j < work; ++j)
-            ++v;
-            final_fib = fib(master_N_value);
-        qDebug() << "Fibonacci iteration("<<iteration<<"): "<< final_fib <<"in thread" << QThread::currentThreadId();
-    };
+        qDebug() << "Starting Fibonacci 1...";
+        int final_fib = fib(master_N_value);
+        qDebug() << "Fibonacci 1... Done: "<< final_fib;
+    });
 
-    std::function<void(int&)> add_series = [&final_add](int &iteration)
+    QFuture<void> futureWatcher2 =QtConcurrent::run([master_N_value]()
     {
-        const int work = 1000 * 1000 * 40;
-        volatile int v = 0;
-        for (int j = 0; j < work; ++j)
-           ++v;
-        float temp = final_add;
-        float sum;
-
-        if(master_N_value!=0)
+         qDebug() << "Starting Harmonic Series 2...";
+        double final_add = 0.0;
+        double sum =0;
+        for(int i=1;i<=master_N_value;i++)
         {
-             for(float i=1;i<=master_N_value;i++)
-             {
-                sum = (1.0/i);
-                final_add +=sum ;
-             }
+            sum = (1.0/i);
+            final_add += sum;
+            qDebug() << "Harmonic Series 2..."<<final_add;
         }
+        qDebug() << "Harmonic Series 2... Done: " <<final_add;
+    });
 
-        qDebug() << "Add iteration("<<iteration<<"): " << temp << "+"<< sum << "=" << final_add << "in thread" << QThread::currentThreadId();
-    };
-
-    std::function<void(int&)> prime = [&prime_num](int &iteration)
+    QFuture<void> futureWatcher3 =QtConcurrent::run([master_N_value]()
     {
-        const int work = 1000 * 1000 * 40;
-        volatile int v = 0;
-        for (int j = 0; j < work; ++j)
-            ++v;
+        qDebug() << "Starting Prime  3...";
+       int prime,cntPrime =0;
 
-        qDebug() << "Prime iteration("<<iteration<<"): "<< "in thread" << QThread::currentThreadId();
-    };
+           int i;
+           if (master_N_value == 1)
+           {
+               qDebug() << "Prime 3... 2";
+               prime = 2;  //if N is equal to 1
+           }
+
+           for (i = 3; ; i += 2)    //for every thing else ingore even numbers
+           {
+               if (isPrime(i))
+               {
+                   qDebug() << "Prime 3..."<<i;
+                   cntPrime++;
+                   if (cntPrime == (master_N_value - 1))    //because we took out the first case
+                   {
+
+                       prime = i;
+                       break;
+                   }
+               }
+           }
 
 
-    // Start the computation.
-    qDebug() << "Staring FutureWatcher 1 & 2 & 3";
-    futureWatcher1.setFuture(QtConcurrent::map(vector, fiba));
-    futureWatcher2.setFuture(QtConcurrent::map(vector, add_series));
-    futureWatcher3.setFuture(QtConcurrent::map(vector, prime));
 
-    // Display the dialog and start the event loop.
-    dialog1.exec();
-    dialog2.exec();
-    dialog3.exec();
-
+       qDebug() << "Prime 3... Done: " <<prime;
+    });
     futureWatcher1.waitForFinished();
     futureWatcher2.waitForFinished();
     futureWatcher3.waitForFinished();
 
-    // Query the future to check if was canceled.
-    qDebug() << "Canceled?" << futureWatcher1.future().isCanceled();
-    qDebug() << "Canceled?" << futureWatcher2.future().isCanceled();
-    qDebug() << "Canceled?" << futureWatcher3.future().isCanceled();
-
-    //final values
-    qDebug() << "Final values Display";
-    qDebug() << "Fibonacci:" << final_fib;
-    qDebug() << "Additive Series:" <<final_add;
-    qDebug() << "Prime Number at n:" << prime_num;
-
+    QApplication::quit();
 }
